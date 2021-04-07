@@ -1,0 +1,34 @@
+<% if user_signed_in? %>
+  <h1>Teams</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @teams.each do |team| %>
+        <tr>
+          <td>
+            <%= team.name %>
+          </td>
+          <td>
+            <%= link_to 'Show', team, class: "btn btn-primary white-color" %>
+          </td>
+          <td>
+            <%= link_to 'Edit', edit_team_path(team), class: "btn btn-primary white-color" %>
+          </td>
+          <td>
+            <%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary white-color" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br/>
+  <%= link_to 'New Team', new_team_path %>
+
+<% end %>
