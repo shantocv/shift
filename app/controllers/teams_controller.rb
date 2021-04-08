@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# This is team controller which handles team related actions
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[ show edit update destroy add_member team_members]
+  before_action :set_team, only: %i[show edit update destroy add_member team_members]
 
   # GET /teams or /teams.json
   def index
@@ -8,8 +11,7 @@ class TeamsController < ApplicationController
   end
 
   # GET /teams/1 or /teams/1.json
-  def show
-  end
+  def show; end
 
   # GET /teams/new
   def new
@@ -17,8 +19,7 @@ class TeamsController < ApplicationController
   end
 
   # GET /teams/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /teams or /teams.json
   def create
@@ -26,7 +27,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       if @team.save
-        format.html { redirect_to @team, notice: "Team was successfully created." }
+        format.html { redirect_to @team, notice: 'Team was successfully created.' }
         format.json { render :show, status: :created, location: @team }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +40,7 @@ class TeamsController < ApplicationController
   def update
     respond_to do |format|
       if @team.update(team_params)
-        format.html { redirect_to @team, notice: "Team was successfully updated." }
+        format.html { redirect_to @team, notice: 'Team was successfully updated.' }
         format.json { render :show, status: :ok, location: @team }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class TeamsController < ApplicationController
   def destroy
     @team.destroy
     respond_to do |format|
-      format.html { redirect_to teams_url, notice: "Team was successfully destroyed." }
+      format.html { redirect_to teams_url, notice: 'Team was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -67,25 +68,16 @@ class TeamsController < ApplicationController
   end
 
   def create_member
-    team_id = params[:team_id]
-    user_id = params[:user_id]
-
-    membership = Membership.create(team_id: team_id, user_id: user_id)
-    error_messages = membership.errors.full_messages
-    if error_messages.empty?
+    membership = Membership.create(team_id: params[:team_id], user_id: params[:user_id])
+    @message = membership.errors.full_messages.join(', ')
+    if @message.empty?
       flash[:notice] = 'Successfully Added Memmber'
       redirect_to members_teams_path(id: team_id)
     else
-      @message = error_messages.join(', ')
-      respond_to do |format|  
+      respond_to do |format|
         format.js
       end
     end
-  end
-
-  def create_error_message(errors)
-    message = ''
-    er
   end
 
   def team_members
@@ -93,13 +85,14 @@ class TeamsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_team
-      @team = Team.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def team_params
-      params.require(:team).permit(:name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_team
+    @team = Team.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def team_params
+    params.require(:team).permit(:name)
+  end
 end
