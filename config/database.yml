@@ -45,11 +45,11 @@ test:
 #
 # You can use this database configuration with:
 #
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
-#
 production:
-  <<: *default
-  database: shift_production
-  username: shift
-  password: <%= ENV['SHIFT_DATABASE_PASSWORD'] %>
+  url: <%= ENV['CLEARDB_DATABASE_URL'] %>
+#
+# production:
+#   <<: *default
+#   database: shift_production
+#   username: shift
+#   password: <%= ENV['SHIFT_DATABASE_PASSWORD'] %>
