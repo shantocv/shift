@@ -24,6 +24,9 @@
           <td>
             <%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary white-color" %>
           </td>
+          <td>
+            <%= link_to 'Add Member', add_member_teams_path(id: team.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#exampleModal', class: 'btn btn-primary'}  %>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -32,3 +35,11 @@
   <%= link_to 'New Team', new_team_path %>
 
 <% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>

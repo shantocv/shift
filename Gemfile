@@ -42,6 +42,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bootstrap-sass', '~> 3.4', '>= 3.4.1'
 gem 'devise', '~> 4.7', '>= 4.7.3'
 gem "haml-rails", "~> 2.0"
+gem 'jquery-rails', '~> 4.4'
 # ----------------------------------------------------------------
 
 group :development, :test do

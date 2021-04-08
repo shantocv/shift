@@ -1,5 +1,6 @@
 class TeamsController < ApplicationController
-  before_action :set_team, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
+  before_action :set_team, only: %i[ show edit update destroy add_member team_members]
 
   # GET /teams or /teams.json
   def index
@@ -54,6 +55,41 @@ class TeamsController < ApplicationController
       format.html { redirect_to teams_url, notice: "Team was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def add_member
+    @users = User.all
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def create_member
+    team_id = params[:team_id]
+    user_id = params[:user_id]
+
+    membership = Membership.create(team_id: team_id, user_id: user_id)
+    error_messages = membership.errors.full_messages
+    if error_messages.empty?
+      flash[:notice] = 'Successfully Added Memmber'
+      redirect_to members_teams_path(id: team_id)
+    else
+      @message = error_messages.join(', ')
+      respond_to do |format|  
+        format.js
+      end
+    end
+  end
+
+  def create_error_message(errors)
+    message = ''
+    er
+  end
+
+  def team_members
+    @users = @team.users
   end
 
   private

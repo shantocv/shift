@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Add member to team '<%= @team.name %>'</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <%= form_with url: "/teams/create_member" , class: "form-inline" do |form| %>
+        <%= form.hidden_field :team_id, value: @team.id %>
+        <%= form.collection_select :user_id, @users, :id, :first_name, {}, {class: 'form-control'} %>
+        <%= form.submit "Add", class: "form-control" %>
+    <% end %>
+    <div id="error-messages" class="error-messages"></div>  
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
