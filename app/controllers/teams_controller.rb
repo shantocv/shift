@@ -72,7 +72,7 @@ class TeamsController < ApplicationController
     @message = membership.errors.full_messages.join(', ')
     if @message.empty?
       flash[:notice] = 'Successfully Added Memmber'
-      redirect_to members_teams_path(id: team_id)
+      redirect_to members_teams_path(id: params[:team_id])
     else
       respond_to do |format|
         format.js

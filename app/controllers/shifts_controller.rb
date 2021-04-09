@@ -4,9 +4,22 @@ class ShiftsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @teams = Team.all
-    @selected_team = @teams.first
-    @members = @teams.first.users
+    @teams = Team.includes(:memberships).includes(:users)
+    if @teams.empty?
+      redirect_to root_path, notice: "No teams added"
+      return
+    end
+    @selected_team = @teams.find {|team| team.users.count > 0 }
+
+    unless @selected_team
+      redirect_to root_path, notice: "Please add atleast one member to at least one team"
+      return      
+    end
+    @members = @selected_team.users
+    if @members.empty?
+      redirect_to root_path, notice: "Please add atleast one member to team #{@selected_team.name}"
+      return
+    end
     @selected_member = @members.first
     member_shifts = @selected_member.member_shifts.where("shift_date >= '#{Time.zone.today}'")
     @shifts = generate_shifts(member_shifts)
