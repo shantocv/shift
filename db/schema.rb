@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_085945) do
+ActiveRecord::Schema.define(version: 2021_04_09_024114) do
+
+  create_table "member_shifts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.datetime "shift_date"
+    t.string "start_time"
+    t.string "end_time"
+    t.bigint "user_id"
+    t.bigint "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_member_shifts_on_team_id"
+    t.index ["user_id"], name: "index_member_shifts_on_user_id"
+  end
 
   create_table "memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "team_id"
@@ -44,6 +56,8 @@ ActiveRecord::Schema.define(version: 2021_04_08_085945) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "member_shifts", "teams"
+  add_foreign_key "member_shifts", "users"
   add_foreign_key "memberships", "teams"
   add_foreign_key "memberships", "users"
 end

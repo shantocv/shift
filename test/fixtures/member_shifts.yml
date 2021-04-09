@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_date: 2021-04-09 08:11:14
+  end_date: 2021-04-09 08:11:14
+  user: one
+  team: one
+
+two:
+  start_date: 2021-04-09 08:11:14
+  end_date: 2021-04-09 08:11:14
+  user: two
+  team: two

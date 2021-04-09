@@ -1,0 +1,49 @@
+<% if user_signed_in? %>
+  <h1>Shifts</h1>
+  <div class="shifts">
+    <div class="row">
+      <div class="col-sm-6">
+        <%= select_tag "team_id", options_from_collection_for_select(@teams, "id", "name", @selected_team.id), class: "form-control" %>
+      </div>
+      <div class="col-sm-6">
+        <%= select_tag "user_id", options_from_collection_for_select(@members, "id", "first_name", @selected_member.id), class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <%= form_with url: "/create_shifts" , class: "form-inline" do |form| %>
+          <%= form.hidden_field :team_id, value: @selected_team.id %>
+          <%= form.hidden_field :user_id, value: @selected_member.id %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% @shifts.each do |date, value| %>
+                  <%= form.fields_for :shift_date, index: date do |shift_date| %>
+                    <tr>
+                      <td>
+                        <%= date %>
+                      </td>
+                      <td>
+                        <%= shift_date.time_field :start_time, value: value[:start_time] %>
+                      </td>
+                      <td>
+                        <%= shift_date.time_field :end_time, value: value[:end_time] %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+            </tbody>
+          </table>
+          <%= form.submit "Save", class: "form-control btn btn-primary pull-right" %>
+        <% end %>
+      <div>
+    </div>
+  </div>
+<% end %>
