@@ -1,0 +1,22 @@
+- if user_signed_in?
+  %h1
+    = @team.name
+    Members
+  = link_to 'Add Member', add_member_teams_path(id: @team.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#exampleModal', class: 'btn btn-primary'}
+  %table.table
+    %thead
+      %tr
+        %th First Name
+        %th Last Name
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td
+            = user.first_name
+          %td
+            = user.last_name
+  %br/
+/ Modal
+#exampleModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content

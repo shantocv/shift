@@ -1,0 +1,13 @@
+.modal-header
+  %h5#exampleModalLabel.modal-title
+    Add member to team '#{@team.name}'
+  %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+    %span{"aria-hidden" => "true"} ×
+.modal-body
+  = form_with url: "/teams/create_member" , class: "form-inline" do |form|
+    = form.hidden_field :team_id, value: @team.id
+    = form.collection_select :user_id, @users, :id, :first_name, {}, {class: 'form-control'}
+    = form.submit "Add", data: { confirm: 'Are you sure?' }, class: "form-control"
+  #error-messages.error-messages
+.modal-footer
+  %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
