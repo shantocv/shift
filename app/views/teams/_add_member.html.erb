@@ -8,7 +8,7 @@
     <%= form_with url: "/teams/create_member" , class: "form-inline" do |form| %>
         <%= form.hidden_field :team_id, value: @team.id %>
         <%= form.collection_select :user_id, @users, :id, :first_name, {}, {class: 'form-control'} %>
-        <%= form.submit "Add", class: "form-control" %>
+        <%= form.submit "Add", data: { confirm: 'Are you sure?' }, class: "form-control" %>
     <% end %>
     <div id="error-messages" class="error-messages"></div>  
 </div>
