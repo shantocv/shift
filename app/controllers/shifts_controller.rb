@@ -5,27 +5,17 @@ class ShiftsController < ApplicationController
 
   def index
     @teams = Team.includes(:memberships).includes(:users)
-    if @teams.empty?
-      redirect_to root_path, notice: "No teams added"
-      return
+    if params[:team_id]
+      @selected_team = @teams.find {|team| team.id == params['team_id'].to_i }    
+    else
+      if @teams.empty?
+        redirect_to root_path, notice: "No teams added"
+        return
+      end
+      @selected_team = @teams.find {|team| team.users.count > 0 }
     end
-    @selected_team = @teams.find {|team| team.users.count > 0 }
-
-    unless @selected_team
-      redirect_to root_path, notice: "Please add atleast one member to at least one team"
-      return      
-    end
-    @members = @selected_team.users
-    if @members.empty?
-      redirect_to root_path, notice: "Please add atleast one member to team #{@selected_team.name}"
-      return
-    end
-    @selected_member = @members.first
-    member_shifts = @selected_member.member_shifts.where("shift_date >= '#{Time.zone.today}'")
-    @shifts = generate_shifts(member_shifts)
+    selected_team_members_shift
   end
-
-  def change; end
 
   def create_shifts
     user_id = params[:user_id]
@@ -42,7 +32,7 @@ class ShiftsController < ApplicationController
       end
     end
 
-    redirect_to :shifts, notice: "Successfully Saved"
+    redirect_to shifts_path(user_id: user_id, team_id: team_id), notice: "Successfully Saved"
   end
 
   private
@@ -66,5 +56,24 @@ class ShiftsController < ApplicationController
                        team_id: team_id,
                        start_time: value['start_time'],
                        end_time: value['end_time'])
+  end
+
+  def selected_team_members_shift
+    unless @selected_team
+      redirect_to root_path, notice: "Please add atleast one member to at least one team"
+      return      
+    end
+    @members = @selected_team.users
+    if @members.empty?
+      redirect_to root_path, notice: "Please add atleast one member to team #{@selected_team.name}"
+      return
+    end
+    @selected_member = params[:user_id] ? fetch_member : @members.first
+    member_shifts = @selected_member.member_shifts.where("shift_date >= '#{Time.zone.today}'")
+    @shifts = generate_shifts(member_shifts)    
+  end
+
+  def fetch_member
+    @selected_member = @members.find {|member| member.id == params['user_id'].to_i }  
   end
 end

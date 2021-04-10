@@ -3,15 +3,15 @@
   <div class="shifts">
     <div class="row">
       <div class="col-sm-6">
-        <%= select_tag "team_id", options_from_collection_for_select(@teams, "id", "name", @selected_team.id), class: "form-control" %>
+        <%= select_tag "team_id", options_from_collection_for_select(@teams, "id", "name", @selected_team.id), class: "form-control", onchange: 'team_onchange_handler()' %>
       </div>
       <div class="col-sm-6">
-        <%= select_tag "user_id", options_from_collection_for_select(@members, "id", "first_name", @selected_member.id), class: "form-control" %>
+        <%= select_tag "user_id", options_from_collection_for_select(@members, "id", "first_name", @selected_member.id), class: "form-control",onchange: 'member_onchange_handler()' %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12" id="shift_form">
         <%= form_with url: "/create_shifts" , class: "form-inline" do |form| %>
           <%= form.hidden_field :team_id, value: @selected_team.id %>
           <%= form.hidden_field :user_id, value: @selected_member.id %>
